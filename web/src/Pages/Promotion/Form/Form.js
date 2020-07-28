@@ -9,8 +9,7 @@ const PagesPromotionForm = () =>{
     
     return (
         <UIContainer>
-            <PromotionForm />
-            {id && <div>id: {id}</div>}
+            <PromotionForm id={id? Number.parseInt(id, 10): null}/>
         </UIContainer>
     );
 };
