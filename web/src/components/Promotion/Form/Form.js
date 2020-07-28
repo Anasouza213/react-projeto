@@ -22,7 +22,7 @@ const PromotionForm = ({id}) => {
                 setValues(resp.data);
             })
         }
-    },[]);
+    },[id]);
 
     onchange = (ev) => {
         const {name, value} = ev.target;
