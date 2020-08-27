@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useRef } from 'react';
 import useApi from 'components/utils/useApi';
 import {Link} from 'react-router-dom';
 import PromotionList from 'components/Promotion/List/List';
@@ -6,10 +6,12 @@ import './Search.css';
 
 
 const PromotionSearch = () =>{
-  //  const [promotions, setPromotions]  = useState([]);
+    // saber qdo componente montou
+    const mountRef = useRef(null);
     const [search, setSearch] =  useState('');
 
     const [load, loadInfo] = useApi({
+        debounceDelay: 300,
         url: '/promotions',
         method: 'get',
         params: {
@@ -18,16 +20,18 @@ const PromotionSearch = () =>{
             _sort: 'id',
             title_like: search || undefined,
         },
-       // onCompleted: (resp) => {
-        //    setPromotions(resp.data);
-        //}
+       
     });
 
-   // console.log(loadInfo.data);
-
-    //euseEffect execulta so qdo monta ou faz update de componente
     useEffect(() =>{
-        load();
+        load({
+            debounced: mountRef.current,
+          });
+      
+          if (!mountRef.current) {
+            mountRef.current = true;
+          }
+         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
     return(
